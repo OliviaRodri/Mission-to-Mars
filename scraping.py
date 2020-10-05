@@ -3,7 +3,7 @@ from splinter import Browser
 from bs4 import BeautifulSoup as soup
 import pandas as pd
 import datetime as dt
-
+import time
 
 def scrape_all():
     # Initiate headless driver for deployment
@@ -17,8 +17,10 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemisphere_image_urls": mars_hemispheres(browser)
     }
+    print(data)
 
     # Stop webdriver and return data
     browser.quit()
@@ -99,6 +101,35 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+def mars_hemispheres(browser):
+    # 1. Use browser to visit the URL 
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    image_link = browser.links.find_by_partial_text('Hemisphere Enhanced')
+
+
+    for i in range(len(image_link)):
+        image_link[i].click()
+        time.sleep(1) 
+        html = browser.html
+        image_soup = soup(html, 'html.parser')
+        img_element = image_soup.find("div", class_='downloads')
+        image_url = img_element.find('a').get('href')
+        title_element = image_soup.find("div", class_='content')
+        title_name = title_element.find('h2').get_text()
+
+        hemisphere_image_urls.append({"img_url":image_url, "title":title_name})
+        browser.back()
+        time.sleep(1)
+        image_link = browser.links.find_by_partial_text('Hemisphere Enhanced')
+    
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
 
