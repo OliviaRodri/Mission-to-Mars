@@ -12,58 +12,62 @@
 </head>
 
 <body>
-    <!-- Add Jumbotron to Header -->
-      <div class="jumbotron text-center">
-        <h1>Mission to Mars</h1>
+  <!-- Add Jumbotron to Header -->
+  <div class="jumbotron text-center">
+    <h1>Mission to Mars</h1>
     <!-- Add a button to activate scraping script -->
-        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
-      </div>
-    <!-- Add section for Mars News -->
-      <div class="row" id="mars-news">
-        <div class="col-md-12">
-          <div class="media">
-            <div class="media-body">
-              <h2>Latest Mars News</h2>
-              <h4 class="media-heading">{{ mars.news_title }}</h4>
-              <p>{{ mars.news_paragraph }}</p>
-            </div>
-          </div>
+    <p><a class="btn btn-primary btn-lg active" href="/scrape" role="button">Scrape New Data</a></p>
+  </div>
+      <!-- Add section for Mars News -->
+  <div class="row" id="mars-news">
+    <div class="col-xs-18 col-md-12">
+      <div class="media">
+        <div class="media-body">
+          <h2>Latest Mars News</h2>
+          <h4 class="media-heading">{{ mars.news_title }}</h4>
+          <p>{{ mars.news_paragraph }}</p>
         </div>
       </div>
-    <!-- Section for Featured Image and Facts table -->
-      <div class="row" id="mars-featured-image">
-        <div class="col-md-8">
-          <div class="text-center">
-            <h2>Featured Mars Image</h2>
-          </div>
-          <img src="{{mars.featured_image}}" style="width:100%"/>
-        </div>
-        <!-- Mars Facts -->
-        <div class="col-md-4">
-          <div class="row" id="mars-facts">
-            <h4>Mars Facts</h4>
-            {{ mars.facts | safe }}
-          </div>
-        </div>
-      </div>
-      <div class="text-center">
-        <h2>Mars Hemispheres</h2>
-      </div>
-      <div class="row" id="mars-hemispheres-image">
-        {% for hemisphere_image_urls in mars.hemisphere_image_urls %}
-        <div class="col-md-6">
-          <img
-            src="{{ hemisphere_image_urls.img_url }}"
-            style="width:100%"
-            alt="Responsive image"
-          />
-          <div class="text-left">
-            <h4>{{hemisphere_image_urls.title}}</h4>
-          </div>
-          
-        </div>
-        {% endfor %}        
-      </div>      
     </div>
+  </div>
+  <!-- Section for Featured Image and Facts table -->
+  <div class="row" id="mars-featured-image">
+    <div class="col-xs-12 col-md-8">
+      <div class="text-center">
+        <h2>Featured Mars Image</h2>
+      </div>
+      <img src="{{mars.featured_image}}" style="width:100%"/>
+    </div>
+    <!-- Mars Facts -->
+    <div class="col-xs-6 col-md-4">
+      <table class="table table-striped">
+      <!-- div class="row" id="mars-facts" -->
+        <div class="text-left">
+          <h4>Mars Facts</h4>
+        </div>
+        {{ mars.facts | safe }}
+      <!-- /div -->
+      </table>
+    </div>
+  </div>
+  <!-- Mars Hemisphers -->
+  <div class="text-center">
+    <h2>Mars Hemispheres</h2>
+  </div>
+  <div class="row" id="mars-hemispheres-image">
+    {% for hemisphere_image_urls in mars.hemisphere_image_urls %}
+    <div class="col-xs-9 col-md-6">
+      <img
+        src="{{ hemisphere_image_urls.img_url }}"
+        style="width:100%"
+        alt="Responsive image"
+      />
+      <div class="text-left">
+        <h4>{{hemisphere_image_urls.title}}</h4>
+      </div>
+      
+    </div>
+    {% endfor %}        
+  </div>      
 </body>
 </html>
